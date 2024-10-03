@@ -5,12 +5,12 @@
 #define MAX_RESERVATION 20
 
 typedef struct  {
+    int reference_unique;
     char nom[20];
     char prenom[20];
     char telephone[20];
     int age ;
     char statut[50];
-    int reference_unique;
     int annee ;
     int mois ;
     int jour ;
@@ -19,14 +19,13 @@ typedef struct  {
 
 
 
-/*Reservation reservation[10]={{"hamza","lamin","0612345676","20","10/2/2024","valide"},
-                              {"","","","",
 
-                              }
-                            }*/
-
-int nomber_reservation = 0 ;
-
+//Reservation reservation[2]={{1,'hamza','lamin',0612345676,20,'10/2/2024','valide'},
+                           // {2,'simo','java',06757577575,8,'10/2/2024','valide'},
+                           // };
+  //sizeof(reservation) / sizeof(reservation[0]);
+//int nomber_reservation = sizeof(reservation) / sizeof(reservation[0]);
+int nomber_reservation = 2;
 
 
 void ajoutes_une_reservation(Reservation reservation[]){
@@ -39,9 +38,10 @@ void ajoutes_une_reservation(Reservation reservation[]){
 
     if(nomber_reservation < MAX_RESERVATION){
 
-        reservation[nomber_reservation].reference_unique = nomber_reservation + 1 ;
+
 
         for(int i=0 ; i<nomber_repetition ; i++){
+            reservation[nomber_reservation].reference_unique = nomber_reservation + 1 ;
             printf("reservation : %d \n",reservation[nomber_reservation].reference_unique);
             printf("NOM : ");
             scanf(" %[^\n]s", reservation[nomber_reservation].nom);
@@ -55,22 +55,41 @@ void ajoutes_une_reservation(Reservation reservation[]){
             printf("AGE : ");
             scanf(" %d", &reservation[nomber_reservation].age);
 
+            printf("STATUT : \n");
+            printf("1. valide \n");
+            printf("2. reporte \n");
+            printf("3. annule \n");
+            printf("4. traite \n");
+            printf("Choisissez un statut : ");
+            scanf("%d", &nomstatut);
+            switch (nomstatut) {
+                case 1:
+                    strcpy(reservation[nomber_reservation].statut, "valide");
+                    break;
+                case 2:
+                    strcpy(reservation[nomber_reservation].statut, "reporte");
+                    break;
+                case 3:
+                    strcpy(reservation[nomber_reservation].statut, "annule");
+                    break;
+                case 4:
+                    strcpy(reservation[nomber_reservation].statut, "traite");
+                    break;
+                default:
+                    printf("Votre choix est invalide.\n");
+                    return;
+           }
+
+
             if(1<reservation[nomber_reservation].mois<12 && 1<reservation[nomber_reservation].jour<31){
-            printf("DATE DE RESERVATION : ");
-            scanf(" %d . %d . %d", &reservation[nomber_reservation].jour,&reservation[nomber_reservation].mois,&reservation[nomber_reservation].annee);
+            printf("DATE DE RESERVATION (xx/xx/xxxx): ");
+            scanf(" %d / %d / %d", &reservation[nomber_reservation].jour,&reservation[nomber_reservation].mois,&reservation[nomber_reservation].annee);
             }
             else{
                 printf("vous avez une erreur dans le mois ou le jour .");
                 return;
             }
-            printf("STATUT : \n");
-            printf("1.valide . \n");
-            printf("2.reporte . \n");
-            printf("3.annule . \n");
-            printf("4.traite . \n");
-            printf("choix un statut :");
-            scanf("%d",&nomstatut);
-
+            printf("\n\n");
             nomber_reservation++;
         }
     }
@@ -134,7 +153,7 @@ void modifier_ou_supprimer(Reservation reservation[]){
                 scanf("%d", &supprimer);
                 } while (supprimer <= 0 || supprimer > nomber_reservation);
                 printf("Votre choix est de supprimer une reservation:\n");
-                printf("Quel reservation souhaitez-vous supprimer: ");
+                printf("Quel reservation souhaitez-vous supprimer: ");//check what is that
                 scanf("%d", &supprimer);
 
                 int found = 0;
@@ -164,16 +183,28 @@ void modifier_ou_supprimer(Reservation reservation[]){
 }
 
 void afficher_reservation(Reservation reservation[]){
-    int reservation_;
-    printf("nomber the student you want display:");
-    scanf("%d", &studentid);
-    if (studentid <= 0 || studentid > numstudents) {
+    for(int i=0 ; i<nomber_reservation ;i++){
+        printf("reservation %d :",reservation[i].reference_unique);
+        printf("nom : %s <<<  prenom : %s <<< telephon : %s <<< age : %d <<< Statut : %s  <<<  date de reservation : %d/   . \n\n\n",reservation[i].nom,
+                reservation[i].prenom,reservation[i].telephone,reservation[i].age, reservation[i].statut,reservation[i].jour,reservation[i].mois,reservation[i].annee);
+    }
+}
+
+void tri_reservations(Reservation reservation[]){
+}
+
+void recherche_reservations(Reservation reservation[]){
+    int reservation_r_u;
+    printf("reference unique pour le reservation que vous afficher:");
+    scanf("%d", &reservation_r_u);
+    if (reservation_r_u <= 0 || reservation_r_u > nomber_reservation) {
         printf("Invalid choice.\n");
     } else {
-        for (int i = 0; i < studentid; i++) {
-            if (students[i].id == studentid) {
-                printf("nomber the student %d name is %s and the age is %d . \n", studentid,
-                       students[i].thename, students[i].theage);
+        for (int i = 0; i < reservation_r_u; i++) {
+            if (reservation[i].reference_unique == reservation_r_u) {
+                printf("reservation %d : \n",reservation[i].reference_unique);
+                printf("nom : %s <<<  prenom : %s <<< telephon : %s <<< age : %d <<< date de reservation : %d/%d/%d    . \n\n\n",reservation[i].nom,
+                reservation[i].prenom,reservation[i].telephone,reservation[i].age,reservation[i].jour,reservation[i].mois,reservation[i].annee);
             }
         }
         return;
@@ -192,8 +223,13 @@ void menu(){
 
 }
 int main() {
+    Reservation reservation[2]={{1,"hamza","lamin","0612345676",20,"valide",10,2,2024},
+                               {2,"simo","java","06757577575",8,"valide",10,2,2024},
+                            };
+
+    int nomber_reservation = sizeof(reservation) / sizeof(reservation[0]);
     int choix ;
-    Reservation reservation[MAX_RESERVATION];
+    //Reservation reservation[MAX_RESERVATION];
     do{
         menu();
         scanf("%d",&choix);
@@ -202,7 +238,13 @@ int main() {
             break;
             case 2: modifier_ou_supprimer(reservation);
             break;
-        }
+            case 3: afficher_reservation(reservation);
+            break;
+            case 4: tri_reservations(reservation);
+            break;
+            case 5: recherche_reservations(reservation);
+            break;
+       }
     }while(choix != 0);
     return 0;
 }
