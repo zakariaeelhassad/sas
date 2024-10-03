@@ -18,7 +18,7 @@ typedef struct  {
 }Reservation;
 
 
-int nomber_reservation = 8;
+int nomber_reservation = 10;
 
 
 void ajoutes_une_reservation(Reservation reservation[]){
@@ -377,14 +377,16 @@ void menu(){
 }
 
 int main() {
-    Reservation reservation[8]={{1,"hamza","lamin","0612345676",20,"valide",10,02,2024},
-                               {2,"simo","java","06757577575",8,"valide",10,02,2024},
-                               {3,"karim","mousi","0614253625",12,"annule",03,10,2024},
+    Reservation reservation[10]={{1,"hamza","lamin","0612345676",20,"valide",10,02,2024},
+                               {2,"crictiono","ronaldo","06757577575",39,"valide",10,02,2024},
+                               {3,"lionil","messi","0614253625",35,"annule",03,10,2024},
                                {4,"zakariae","el hassad","0699767689",19,"traite",03,10,2024},
-                               {5,"walid","el hassad","0699767689",24,"traite",03,10,2024},
-                               {6,"meryam","el hassad","0699767689",17,"reporte",03,10,2024},
-                               {7,"yahya","el hassad","0699767689",10,"valide",03,10,2024},
-                               {8,"janat","el hassad","0699767689",2,"reporte",03,10,2024},
+                               {5,"lamin","yamal","0699767689",17,"traite",03,10,2024},
+                               {6,"Jude","Jude Bellingham","0699767689",21,"reporte",03,10,2024},
+                               {7,"Jamal","Musiala","0699767689",10,"valide",03,10,2024},
+                               {8,"Joshua","Kimmich","0699767689",29,"reporte",03,10,2024},
+                               {9,"Vinicius","Junior","0699767689",25,"reporte",03,10,2024},
+                               {10,"Kylian","Mbappe","0699767689",25,"reporte",03,10,2024},
                             };
 
     int nomber_reservation = sizeof(reservation) / sizeof(reservation[0]);
@@ -415,4 +417,3 @@ int main() {
     }while(choix != 0);
     return 0;
 }
-
