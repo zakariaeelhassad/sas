@@ -274,7 +274,7 @@ void recherche_reservations(Reservation reservation[]){
                 scanf(" %[^\n]s", &reservation_n);
                 printf("------------------\n");
 
-                for (int i = 0; i < reservation_r_u; i++) {
+                for (int i = 0; i < reservation_n; i++) {
                     if (strcmp(reservation[i].nom , reservation_n)==0){
                         printf("reservation %d : \n",reservation[i].reference_unique);
                         printf("nom : %s <<<  prenom : %s <<< telephon : %s <<< age : %d <<< Statut : %s   <<< date de reservation : %d/%d/%d    . \n\n\n",reservation[i].nom,
