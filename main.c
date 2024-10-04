@@ -8,7 +8,7 @@ typedef struct  {
     int reference_unique;
     char nom[20];
     char prenom[20];
-    char telephone[20];
+    char telephone[10];
     int age ;
     char statut[50];
     int jour ;
@@ -75,17 +75,20 @@ void ajoutes_une_reservation(Reservation reservation[]){
            }
 
 
-            if(1<reservation[nomber_reservation].mois<12 && 1<reservation[nomber_reservation].jour<31){
+
             printf("DATE DE RESERVATION (jj/mm/aaaa): ");
             scanf(" %d / %d / %d", &reservation[nomber_reservation].jour,&reservation[nomber_reservation].mois,&reservation[nomber_reservation].annee);
+            if(reservation[nomber_reservation].mois < 12 && reservation[nomber_reservation].mois > 1 && reservation[nomber_reservation].jour<31 && reservation[nomber_reservation].jour > 1 ){
+                    printf("..");
             }
             else{
-                printf("vous avez une erreur dans le mois ou le jour .");
+                printf("vous avez une erreur dans le mois ou le jour \n.");
                 return;
             }
             printf("\n\n");
             nomber_reservation++;
         }
+        printf("le reservation entrez aver succes. \n ");
     }
     else {
         printf("limite de reservation atteinte. Impossible d'ajouter plus de reservation.\n\n\n");
@@ -125,29 +128,36 @@ void modifier_ou_supprimer(Reservation reservation[]){
 
                 switch (modifichoix) {
                     case 1:printf("name : ");
-                           scanf(" %[^\n]s", reservation[nomber_reservation-1].nom);
+                           scanf(" %[^\n]s", reservation[modifier-1].nom);
+                           printf("le nom : '%s' de reservstion '%d' qui entrez modifier avec succes .\n",reservation[modifier-1].nom,modifier);
                            break;
                     case 2:printf("prenom: ");
-                           scanf(" %[^\n]s", &reservation[nomber_reservation-1].prenom);
+                           scanf(" %[^\n]s", reservation[modifier-1].prenom);
+                           printf("le prenom : '%s' de reservstion '%d' qui entrez modifier avec succes .\n",reservation[modifier-1].prenom,modifier);
                            break;
                     case 3:printf("telephone: ");
-                           scanf(" %s", &reservation[nomber_reservation-1].telephone);
+                           scanf(" %s", reservation[modifier-1].telephone);
+                           printf("le telephone : '%s' de reservstion '%d' qui entrez modifier avec succes .\n",reservation[modifier-1].telephone,modifier);
                            break;
                     case 4:printf("age: ");
-                           scanf("%d", &reservation[nomber_reservation-1].age);
+                           scanf("%d", &reservation[modifier-1].age);
+                           printf("le age='%d' de reservstion '%d' qui entrez modifier avec succes.\n",reservation[modifier-1].age,modifier);
                            break;
                     case 5:printf("date de reserfation: ");
-                           scanf("%d / %d / %d", &reservation[nomber_reservation-1].jour,&reservation[nomber_reservation-1].mois,&reservation[nomber_reservation-1].annee);
+                           scanf("%d / %d / %d", &reservation[modifier-1].jour,&reservation[modifier-1].mois,&reservation[modifier-1].annee);
+                           printf("la date de reserfation : (%d/%d/%d) de reservstion '%d' qui entrez modifier avec succes .\n",reservation[modifier-1].jour,reservation[modifier-1].mois,reservation[modifier-1].annee,modifier);
                            break;
                     case 6:printf("statut: ");
-                           scanf(" %s", &reservation[nomber_reservation-1].prenom);
+                           scanf(" %s", &reservation[modifier-1].statut);
+                           printf("le statut : '%s' de reservstion '%d' qui entrez modifier avec succes . \n",reservation[modifier-1].statut,modifier);
                            break;
                     default:printf("Choix invalide.\n");
                            break;
                 }
+                break;
 
         case 2 :printf("Votre choix est de supprimer une reservation:\n");
-                do {printf("entrez la référence unique de réservation que vous souhaitez supprimer: ");
+                do {printf("entrez la reference unique de reservation que vous souhaitez supprimer: ");
                 scanf("%d", &supprimer);
                 } while (supprimer <= 0 || supprimer > nomber_reservation);
                 printf("------------------\n");
@@ -161,7 +171,7 @@ void modifier_ou_supprimer(Reservation reservation[]){
                 }
                 (nomber_reservation)--;
                 found = 1;
-                printf("reservation %d supprime avec succes!\n", supprimer);
+                printf("reservation %d supprimer avec succes!\n", supprimer);
                 break;
                     }
                 }
@@ -235,7 +245,8 @@ void tri_reservations(Reservation reservation[] , int nomber_reservation){
                 printf("reservation essayee par nom:\n");
                 afficherReservations(reservation, nomber_reservation);
                 break;
-        break;
+        default:printf("Cette option n'existe pas \n");
+                break;
 
     }
 
@@ -270,21 +281,31 @@ void recherche_reservations(Reservation reservation[]){
                 }
                 return;
                 }
-        case 2: printf("entrez le nom pour le reservation que vous afficher:");
-                scanf(" %[^\n]s", &reservation_n);
-                printf("------------------\n");
+                break;
+        case 2:
+            printf("Entrez le nom de la reservation que vous souhaitez afficher : ");
+            scanf(" %[^\n]s", reservation_n);
+            printf("------------------\n");
 
-                for (int i = 0; i < reservation_n; i++) {
-                    if (strcmp(reservation[i].nom , reservation_n)==0){
-                        printf("reservation %d : \n",reservation[i].reference_unique);
-                        printf("nom : %s <<<  prenom : %s <<< telephon : %s <<< age : %d <<< Statut : %s   <<< date de reservation : %d/%d/%d    . \n\n\n",reservation[i].nom,
-                        reservation[i].prenom,reservation[i].telephone,reservation[i].age,reservation[i].statut,reservation[i].jour,reservation[i].mois,reservation[i].annee);
-                    }
-                    else{
-                        printf("ce nom n'existe pas .");
-                    }
+            int found = 0;
+            for (int i = 0; i < nomber_reservation; i++) {
+                if (strcmp(reservation[i].nom, reservation_n) == 0) {
+                    found = 1;
+                    printf("Reservation %d : \n", reservation[i].reference_unique);
+                    printf("Nom : %s <<< Prenom : %s <<< Telephone : %s <<< Age : %d <<< Statut : %s <<< Date de reservation : %d/%d/%d\n\n\n",
+                        reservation[i].nom, reservation[i].prenom, reservation[i].telephone,
+                        reservation[i].age, reservation[i].statut,
+                        reservation[i].jour, reservation[i].mois, reservation[i].annee);
                 }
-                return;
+            }
+            if (!found) {
+                printf("Aucune reservation trouvee avec ce nom.\n");
+            }
+            break;
+
+        default:
+            printf("Choix invalide.\n");
+            break;
     }
 }
 
@@ -339,35 +360,35 @@ void statistiques(Reservation reservation[]){
                     somestatut1 ++ ;
                 }
              }
-             printf("le nombre tptal de reserfation statut ( valide ) : %d \n",somestatut1);
+             printf("le nombre total de reserfation statut ( valide ) : %d \n",somestatut1);
 
              for(int i=0 ; i < nomber_reservation ; i++){
                 if (strcmp(reservation[i].statut,"annule")==0){
                     somestatut2 ++ ;
                 }
              }
-             printf("le nombre tptal de reserfation statut( annule ) : %d \n",somestatut2);
+             printf("le nombre total de reserfation statut( annule ) : %d \n",somestatut2);
 
              for(int i =0 ; i < nomber_reservation ; i++){
                 if(strcmp(reservation[i].statut,"reporte")==0) {
                     somestatut3 ++ ;
                 }
              }
-             printf("le nombre tptal de reserfation statut(reporte) : %d \n",somestatut3);
+             printf("le nombre total de reserfation statut(reporte) : %d \n",somestatut3);
 
              for(int i =0 ; i < nomber_reservation ; i++){
                 if(strcmp(reservation[i].statut,"traite")==0) {
                     somestatut4 ++ ;
                 }
              }
-             printf("le nombre tptal de reserfation statut (traite) : %d \n",somestatut4);
+             printf("le nombre total de reserfation statut (traite) : %d \n",somestatut4);
     }
 }
 
 void menu(){
     printf("1.Ajouter une reservation . \n");
     printf("2.Modifier ou supprimer une reservation . \n");
-    printf("3.Afficher les details d'une reservation  . \n");
+    printf("3.Afficher les details des reservations  . \n");
     printf("4.Tri des reservations . \n");
     printf("5.Recherche des reservations . \n");
     printf("6.Statistiques . \n");
@@ -378,15 +399,15 @@ void menu(){
 
 int main() {
     Reservation reservation[10]={{1,"hamza","lamin","0612345676",20,"valide",10,02,2024},
-                               {2,"crictiono","ronaldo","06757577575",39,"valide",10,02,2024},
+                                {2,"crictiono","ronaldo","06757577575",39,"valide",10,02,2024},
                                {3,"lionil","messi","0614253625",35,"annule",03,10,2024},
                                {4,"zakariae","el hassad","0699767689",19,"traite",03,10,2024},
                                {5,"lamin","yamal","0699767689",17,"traite",03,10,2024},
-                               {6,"Jude","Jude Bellingham","0699767689",21,"reporte",03,10,2024},
-                               {7,"Jamal","Musiala","0699767689",10,"valide",03,10,2024},
-                               {8,"Joshua","Kimmich","0699767689",29,"reporte",03,10,2024},
-                               {9,"Vinicius","Junior","0699767689",25,"reporte",03,10,2024},
-                               {10,"Kylian","Mbappe","0699767689",25,"reporte",03,10,2024},
+                               {6,"jude","jude bellingham","0699767689",21,"reporte",03,10,2024},
+                               {7,"jamal","musiala","0699767689",10,"valide",03,10,2024},
+                               {8,"joshua","kimmich","0699767689",29,"reporte",03,10,2024},
+                               {9,"vinicius","junior","0699767689",25,"reporte",03,10,2024},
+                               {10,"kylian","mbappe","0699767689",25,"reporte",03,10,2024},
                             };
 
     int nomber_reservation = sizeof(reservation) / sizeof(reservation[0]);
@@ -395,7 +416,7 @@ int main() {
     do{
         menu();
         scanf("%d",&choix);
-        printf("------------------\n");
+        printf("-------------------------------------------------------\n");
         switch(choix){
             case 1: ajoutes_une_reservation(reservation);
             break;
@@ -414,6 +435,7 @@ int main() {
             default:printf("Cette option n'existe pas");
             break;
        }
+       printf("-------------------------------------------------------\n");
     }while(choix != 0);
     return 0;
 }
